@@ -1,7 +1,6 @@
-﻿namespace OficinaWebMVC.Database.Entities
+﻿namespace OficinaWebMVC.Database.Entities;
+
+public class Entidade
 {
-    public class Entidade
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }
