@@ -2,7 +2,7 @@
 
 namespace OficinaWebMVC.Database.Entities;
 
-public class Orcamento:Entidade,
+public class Orcamento:Entidade
 {
     public Veiculo Veiculo { get; set; }
     public DateTime DataInicialOrcamento { get; set; }
