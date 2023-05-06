@@ -30,6 +30,8 @@ public class OficinaDBContexto:DbContext
         base.OnModelCreating(modelBuilder);
     }
 
+    public DbSet<OficinaWebMVC.Database.Entities.Veiculo> Veiculo { get; set; } = default!;
+
 
 
 
