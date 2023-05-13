@@ -52,14 +52,24 @@ namespace OficinaWebMVC.Controllers
                 return NotFound();
             }
 
+            
             var servico = await _context.Servicos
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+
             if (servico == null)
             {
                 return NotFound();
             }
+            ServicoModel servicoModel = new ServicoModel();
 
-            return View(servico);
+            servicoModel.Id = servico.Id;
+            servicoModel.Observacao = servico.Observacao;
+            servicoModel.Preco = servico.Preco;
+            servicoModel.TipoServico = servico.TipoServico;
+            servicoModel.Descricao = servico.Descricao;
+
+            return View(servicoModel);
         }
 
         // GET: Servicos/Create
@@ -73,16 +83,23 @@ namespace OficinaWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Descricao,Observacao,Preco,TipoServico,Id")] Servico servico)
+        public async Task<IActionResult> Create([Bind("Descricao,Observacao,Preco,TipoServico,Id")] ServicoModel servicoModel)
         {
+
             if (ModelState.IsValid)
             {
+                Servico servico = new Servico();
+
                 servico.Id = Guid.NewGuid();
+                servico.TipoServico = servicoModel.TipoServico;
+                servico.Observacao = servicoModel.Observacao;
+                servico.Preco = servicoModel.Preco;
+                servico.Descricao= servicoModel.Descricao;
                 _context.Add(servico);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(servico);
+            return View(servicoModel);
         }
 
         // GET: Servicos/Edit/5
@@ -98,7 +115,16 @@ namespace OficinaWebMVC.Controllers
             {
                 return NotFound();
             }
-            return View(servico);
+            ServicoModel servicoModel = new ServicoModel
+            {
+                Id = servico.Id,
+                Descricao = servico.Descricao,
+                Observacao = servico.Observacao,
+                Preco = servico.Preco,
+                TipoServico = servico.TipoServico
+                
+            };
+            return View(servicoModel);
         }
 
         // POST: Servicos/Edit/5
@@ -106,23 +132,34 @@ namespace OficinaWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Descricao,Observacao,Preco,TipoServico,Id")] Servico servico)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Descricao,Observacao,Preco,TipoServico,Id")] ServicoModel servicoModel)
         {
-            if (id != servico.Id)
+            
+            if (id != servicoModel.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                
                 try
                 {
+
+                    Servico servico = new Servico
+                    {
+                        Observacao = servicoModel.Observacao,
+                        Descricao = servicoModel.Descricao,
+                        Id = servicoModel.Id,
+                        Preco = servicoModel.Preco,
+                        TipoServico = servicoModel.TipoServico  
+                    };
                     _context.Update(servico);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ServicoExists(servico.Id))
+                    if (!ServicoExists(servicoModel.Id))
                     {
                         return NotFound();
                     }
@@ -133,7 +170,7 @@ namespace OficinaWebMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(servico);
+            return View(servicoModel);
         }
 
         // GET: Servicos/Delete/5
@@ -146,12 +183,24 @@ namespace OficinaWebMVC.Controllers
 
             var servico = await _context.Servicos
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+
             if (servico == null)
             {
                 return NotFound();
             }
 
-            return View(servico);
+            ServicoModel servicoModel = new ServicoModel
+            {
+                Id = servico.Id,
+                Descricao = servico.Descricao,
+                Observacao = servico.Observacao,
+                Preco= servico.Preco,
+                TipoServico = servico.TipoServico
+
+            };
+
+            return View(servicoModel);
         }
 
         // POST: Servicos/Delete/5

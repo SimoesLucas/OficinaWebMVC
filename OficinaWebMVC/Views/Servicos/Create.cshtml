@@ -1,12 +1,13 @@
-﻿@model OficinaWebMVC.Database.Entities.Servico
+﻿@using OficinaWebMVC.Enums;
+@model OficinaWebMVC.Models.ServicoModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar";
 }
 
-<h1>Create</h1>
+<h1>Criar</h1>
 
-<h4>Servico</h4>
+<h4>Serviço</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="TipoServico" class="control-label"></label>
-                <select asp-for="TipoServico" class="form-control"></select>
+                <select asp-for="TipoServico" asp-items="Html.GetEnumSelectList<TipoServico>()" class="form-control" ></select>
                 <span asp-validation-for="TipoServico" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -40,7 +41,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Listar</a>
 </div>
 
 @section Scripts {
