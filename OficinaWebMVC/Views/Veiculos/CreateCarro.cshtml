@@ -1,0 +1,57 @@
+﻿@using OficinaWebMVC.Enums;
+@model OficinaWebMVC.Models.CarroModel;
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Veiculo</h4>
+<hr />
+<div class="row">
+    <p class="text-danger">@ViewBag.Error</p>
+    <div class="col-md-4">
+        <form asp-action="CreateCarro">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Placa" class="control-label"></label>
+                <input asp-for="Placa" class="form-control" />
+                <span asp-validation-for="Placa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ano" class="control-label"></label>
+                <input asp-for="Ano" class="form-control" />
+                <span asp-validation-for="Ano" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodChassi" class="control-label"></label>
+                <input asp-for="CodChassi" class="form-control" />
+                <span asp-validation-for="CodChassi" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ModeloCarro" class="control-label"></label>
+                <select asp-for="ModeloCarro" asp-items="Html.GetEnumSelectList<ModeloCarro>()" class="form-control"></select>
+                <span asp-validation-for="ModeloCarro" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Clientes</label>
+                <select asp-items="@ViewBag.Clientes" class="form-control" asp-for="IdCliente"></select>
+                              
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Criar Carro" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

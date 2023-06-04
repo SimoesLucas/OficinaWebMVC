@@ -3,7 +3,7 @@ using OficinaWebMVC.Enums;
 
 namespace OficinaWebMVC.Models
 {
-    public class VeiculoModel
+    public class MotoModel
     {
 
         public string Placa { get; set; }
@@ -13,7 +13,7 @@ namespace OficinaWebMVC.Models
         public Cliente Cliente { get; set; }
 
         public ModeloMoto ModeloMoto { get; set; }
-        public ModeloCarro ModeloCarro { get; set; }
+      
 
     }
 }

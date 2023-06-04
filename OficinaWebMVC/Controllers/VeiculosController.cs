@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OficinaWebMVC.Database.Contexto;
 using OficinaWebMVC.Database.Entities;
+using OficinaWebMVC.Models;
 
 namespace OficinaWebMVC.Controllers
 {
@@ -22,9 +23,9 @@ namespace OficinaWebMVC.Controllers
         // GET: Veiculos
         public async Task<IActionResult> Index()
         {
-              return _context.Veiculo != null ? 
-                          View(await _context.Veiculo.ToListAsync()) :
-                          Problem("Entity set 'OficinaDBContexto.Veiculo'  is null.");
+            return _context.Veiculo != null ?
+                        View(await _context.Veiculo.ToListAsync()) :
+                        Problem("Entity set 'OficinaDBContexto.Veiculo'  is null.");
         }
 
         // GET: Veiculos/Details/5
@@ -46,8 +47,28 @@ namespace OficinaWebMVC.Controllers
         }
 
         // GET: Veiculos/Create
-        public IActionResult Create()
+        public IActionResult CreateMoto()
         {
+            return View();
+        }
+        public async Task<IActionResult> CreateCarro()
+        {
+            var clienteBanco = await _context.Clientes.ToListAsync();
+            var listaCliente = new List<SelectListItem>();
+
+            foreach (var cliente in clienteBanco)
+            {
+                listaCliente.Add(new SelectListItem
+                {
+                    Text = cliente.Nome,
+                    Value = cliente.Id.ToString(),
+
+                });
+
+            }
+
+            ViewBag.Clientes = listaCliente;
+
             return View();
         }
 
@@ -56,7 +77,38 @@ namespace OficinaWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Placa,Ano,CodChassi,Id")] Veiculo veiculo)
+        public async Task<IActionResult> CreateCarro([Bind("Placa,Ano,CodChassi,IdCliente")] CarroModel veiculo)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Carro carro = new Carro();
+
+                    carro.Id = Guid.NewGuid();
+                    carro.ModeloCarro = veiculo.ModeloCarro;
+                    carro.Placa = veiculo.Placa;
+                    carro.Ano = veiculo.Ano;
+                    carro.CodChassi = veiculo.CodChassi;
+                    carro.ClienteId = veiculo.IdCliente;
+
+                    _context.Add(carro);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e.Message;
+                return View(veiculo);
+            }
+            return View(veiculo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateMoto([Bind("Placa,Ano,CodChassi,Id")] Veiculo veiculo)
         {
             if (ModelState.IsValid)
             {
@@ -151,14 +203,14 @@ namespace OficinaWebMVC.Controllers
             {
                 _context.Veiculo.Remove(veiculo);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool VeiculoExists(Guid id)
         {
-          return (_context.Veiculo?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Veiculo?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

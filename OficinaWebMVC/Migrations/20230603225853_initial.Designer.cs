@@ -11,8 +11,8 @@ using OficinaWebMVC.Database.Contexto;
 namespace OficinaWebMVC.Migrations
 {
     [DbContext(typeof(OficinaDBContexto))]
-    [Migration("20230429230524_InicialOficina")]
-    partial class InicialOficina
+    [Migration("20230603225853_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
